@@ -76,6 +76,7 @@ class SeleniumOneToSeleniumTwoConverter
 class SeleniumTwoToBehatMinkFormatter
 {
     protected $contextFileContent;
+    protected $featureFileContent;
     protected $converter;
     
     public function __construct($fileName)
@@ -90,6 +91,27 @@ use Behat\MinkExtension\Context\MinkContext;
  */
 class FeatureContext extends MinkContext
 {
+    /**
+     * Initializes context.
+     * Every scenario gets it's own context object.
+     *
+     * @param array \$parameters context parameters (set them up through behat.yml)
+     */
+    public function __construct(array \$parameters)
+    {
+        // Initialize your context here
+    }
+
+FILE;
+        $this->featureFileContent = <<<FILE
+Feature: Search
+    In order to see a word definition
+    As a website user
+    I need to be able to search for a word
+
+    @javascript
+    Scenario: Searching for a page with autocompletion
+        Given I am on "/wiki/Main_Page"
 FILE;
         $this->converter = new SeleniumOneToSeleniumTwoConverter($fileName);
     }
