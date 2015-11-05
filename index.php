@@ -2,13 +2,21 @@
 
 class SeleniumOneToSeleniumTwoConverter
 {
+    protected $fileContent;
     protected $commandsTableXMLIterator;
     
     public function __construct($filename)
     {
-        $fileContent = file_get_contents($filename);
-        $this->commandsTableXMLIterator = new SimpleXMLElementIterator($fileContent);
-//        var_dump($this->commandsTable);
+        $this->fileContent = file_get_contents($filename);
+        $this->commandsTableXMLIterator = new SimpleXMLIterator($this->fileContent);
+    }
+    
+    public function getTestName()
+    {
+        $domNode = new DOMDocument('1.0', 'UTF-8');
+        $domNode->loadXML($this->fileContent);
+        $title = $domNode->getElementsByTagName('title')[0];
+        return $title->nodeValue;
     }
     
     protected function getCommandsListTable()
@@ -47,7 +55,7 @@ class SeleniumOneToSeleniumTwoConverter
     public function convert()
     {
         $commandsList = $this->getCommandsList();
-        $commandsCount = count($CommandsList);
+        $commandsCount = count($commandsList);
         $commandsListInSeleniumTwo = [];
         for ($i = 0; $i < $commandsCount; ++$i) {
             $commandsListInSeleniumTwo[] = $this->appropriateCommandForSeleniumTwo($commandsList[$i]);
@@ -58,22 +66,46 @@ class SeleniumOneToSeleniumTwoConverter
     {
         
     }
+    
+    protected function open()
+    {
+        
+    }
 }
 
 class SeleniumTwoToBehatMinkFormatter
 {
-    public function __construct()
+    protected $contextFileContent;
+    protected $converter;
+    
+    public function __construct($fileName)
     {
-        
+        $this->contextFileContent = <<<FILE
+<?php
+
+use Behat\MinkExtension\Context\MinkContext;
+
+/**
+ * Features context.
+ */
+class FeatureContext extends MinkContext
+{
+FILE;
+        $this->converter = new SeleniumOneToSeleniumTwoConverter($fileName);
     }
     
     public function format()
     {
-        
+        $testName = str_replace(' ', '', ucwords(
+            $this->converter->getTestName()
+        ));
+        $this->contextFileContent .= "public function {$testName}()\n{";
+        var_dump($this->contextFileContent);
     }
 }
 
 $fileOne = '/Users/narek_vardzelyan/Downloads/10 hour long Training Session is created.xhtml';
 $fileTwo = '/Users/narek_vardzelyan/Documents/search_wikipedia_html_testcase.html';
 
-$converter = new SeleniumOneToSeleniumTwoConverter($fileOne);
+$formatter = new SeleniumTwoToBehatMinkFormatter($fileOne);
+$formatter->format();
