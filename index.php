@@ -55,7 +55,7 @@ FILE;
     
     protected function getCommandsListTable()
     {
-        $elements = $this->testCaseXMLDOM->getElementsByTagName();
+        $elements = $this->testCaseXMLDOM->getElementsByTagName('table');
         if (count($elements) !== 0) {
             return $elements[0];
         }
@@ -64,7 +64,7 @@ FILE;
     
     protected function getCommandsList()
     {
-        $commandsListTableXMLIterator = $this->getCommandsListTable();
+        $commandsListTableXMLIterator = new SimpleXMLIterator($this->getCommandsListTable()->saveXML());
         $commandsList = [];
         while ($commandsListTableXMLIterator->current() !== null) {
             if ($commandsListTableXMLIterator->current()->getName() === 'tr') {
