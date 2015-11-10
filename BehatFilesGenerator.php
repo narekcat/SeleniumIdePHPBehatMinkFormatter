@@ -4,14 +4,13 @@ require_once 'SeleniumRCToBehatMinkFormatter.php';
 require_once 'SeleniumFileParser.php';
 
 /**
- * Description of BehatFilesGenerator
- *
+ * This class generates Behat Mink context file and feature file.
  * @author narek_vardzelyan
  */
 class BehatFilesGenerator {
     protected $seleniumRCToBehatMinkFormatter;
     protected $seleniumFileParser;
-    protected $SeleniumIdeParsedXML;
+    protected $seleniumIdeParsedXML;
     
     public function __construct($filePath)
     {
@@ -22,19 +21,24 @@ class BehatFilesGenerator {
         );
     }
     
+    protected function getTestName()
+    {
+        return $this->seleniumIdeParsedXML['test_name'];
+    }
+    
     protected function getTestMethodName()
     {
-        
+        //return $this->seleniumIdeParsedXML['test_name'];
     }
     
     protected function getTestMethodContent()
     {
-        
+        return $this->seleniumRCToBehatMinkFormattr->format();
     }
     
     protected function getTestFeatureFileName()
     {
-        
+        return str_replace(' ', '_', $this->seleniumIdeParsedXML['test_name']);
     }
     
     protected function generateContextFile()
@@ -46,36 +50,33 @@ use Behat\MinkExtension\Context\MinkContext;\n
 /**
  * Features context.
  */
-class FeatureContext extends MinkContext
-{
+class FeatureContext extends MinkContext\n{
     /**
      * Initializes context.
      * Every scenario gets it's own context object.
      *
      * @param array \$parameters context parameters (set them up through behat.yml)
      */
-    public function __construct(array \$parameters)
-    {
-        // Initialize your context here
-    }\n
-    {$this->seleniumRCToBehatMinkFormatter->format()}
+    public function __construct(array \$parameters)\n\t{
+        // Initialize your context here\n\t}\n
+    public function {$this->getTestMethodName()}()
+    {\n{$this->seleniumRCToBehatMinkFormatter->format()}\n\t}\n}
 FILE;
         file_put_contents($fileName, $data);
     }
     
     protected function generateFeatureFile()
     {
-        $fileName = ;
+        $fileName = $this->getTestFeatureFileName();
         $data = <<<FILE
-Feature: Search
-    In order to see a word definition
-    As a website user
-    I need to be able to search for a word
+Feature: {$this->getTestName()}
+    Feature description
 
     @javascript
-    Scenario: Searching for a page with autocompletion
-        Given I am on "/wiki/Main_Page"
+    Scenario: {$this->getTestName()}
+        {$this->getTestName()}
 FILE;
+        file_put_contents($fileName, $data);
     }
     
     public function generate()

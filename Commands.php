@@ -1,4 +1,7 @@
 <?php
+/**
+ * The file contains commands factory.
+ */
 
 class CommandFactory
 {

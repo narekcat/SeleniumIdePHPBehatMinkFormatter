@@ -1,4 +1,7 @@
 <?php
+/**
+ * The file contains main logic of the application
+ */
 
 require_once 'BehatFileGenerator.php';
 

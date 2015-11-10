@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Description of SeleniumFileParser
- *
+ * The class parses Selenium Ide html test file
+ * and returns array with appropriate fields.
  * @author narek_vardzelyan
  */
 class SeleniumFileParser {
