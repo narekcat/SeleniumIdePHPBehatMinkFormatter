@@ -9,13 +9,11 @@ require_once 'Commands.php';
  */
 class SeleniumRCToBehatMinkFormatter
 {
-    protected $minkContext;
-    protected $seleniumIdeParsedXML;
+    protected $seleniumIdeTestData;
     
-    public function __construct($seleniumIdeParsedXML)
+    public function __construct($seleniumIdeTestData)
     {
-        $this->seleniumIdeParsedXML = $seleniumIdeParsedXML;
-        $this->minkContext = '';
+        $this->seleniumIdeTestData = $seleniumIdeTestData;
     }
     
     protected function getCommandByName($command)
@@ -25,11 +23,12 @@ class SeleniumRCToBehatMinkFormatter
     
     public function format()
     {
-        $commandsList = $this->seleniumIdeParsedXML['commands_list'];
+        $minkContext = '';
+        $commandsList = $this->seleniumIdeTestData['commands_list'];
         foreach ($commandsList as $command) {
             $commandObj = $this->getCommandByName($command);
-            $this->minkContext .= $commandObj->toBehatMink();
+            $minkContext .= $commandObj->toBehatMink();
         }
-        return $this->minkContext;
+        return $minkContext;
     }
 }

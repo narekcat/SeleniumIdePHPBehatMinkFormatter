@@ -39,7 +39,7 @@ class Open extends BaseCommand
 {
     public function toBehatMink()
     {
-        return "\t\$this->getSession()->visit({$this->command[1]});\n";
+        return "\t\$this->getSession()->visit(\"{$this->command['target']}\");\n";
     }
 }
 
@@ -47,8 +47,16 @@ class Type extends BaseCommand
 {
     public function toBehatMink()
     {
-        return "\t\$this->getSession()->fillFields({$this->command[1]}, "
-        . "{$this->command[2]});\n";
+        return "\t\$this->getSession()->fillFields(\"{$this->command['target']}\", "
+        . "\"{$this->command['value']}\");\n";
+    }
+}
+
+class Click extends BaseCommand
+{
+    public function toBehatMink()
+    {
+        return "\t\$this->getSession()->clicLink(\"{$this->command['target']}\");\n";
     }
 }
 
@@ -56,7 +64,7 @@ class ClickAndWait extends BaseCommand
 {
     public function toBehatMink()
     {
-        return "\t\$this->getSession()->pressButton({$this->command[1]});\n"
+        return "\t\$this->getSession()->pressButton(\"{$this->command['target']}\");\n"
         . "\t\$this->getSession()->wait();\n";
     }
 }
@@ -65,8 +73,8 @@ class Select extends BaseCommand
 {
     public function toBehatMink()
     {
-        return "\t\$this->getSession()->selectOption({$this->commandcommand[1]}, "
-        . "{$this->commandcommand[2]});\n";
+        return "\t\$this->getSession()->selectOption(\"{$this->command['target']}\", "
+        . "\"{$this->command['value']}\");\n";
     }
 }
 
@@ -74,8 +82,8 @@ class SendKeys extends BaseCommand
 {
     public function toBehatMink()
     {
-        return "\t\$this->getSession()->fillFields({$this->commandcommand[1]}, "
-        . "{$this->commandcommand[2]});\n";
+        return "\t\$this->getSession()->fillFields(\"{$this->command['target']}\", "
+        . "\"{$this->command['value']}\");\n";
     }
 }
 
@@ -83,7 +91,7 @@ class WaitForElementPresent extends BaseCommand
 {
     public function toBehatMink()
     {
-        return "\t\$this->getSession()->wait(10000, 'document.getElementById"
-        . "('{$this->commandcommand[1]}')')";
+        return "\t\$this->getSession()->wait('target'0000, 'document.getElementById"
+        . "(\"{$this->command['target']}\")')";
     }
 }

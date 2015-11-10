@@ -7,23 +7,22 @@ require_once 'SeleniumFileParser.php';
  * This class generates Behat Mink context file and feature file.
  * @author narek_vardzelyan
  */
-class BehatFilesGenerator {
+class BehatTestGenerator {
     protected $seleniumRCToBehatMinkFormatter;
-    protected $seleniumFileParser;
-    protected $seleniumIdeParsedXML;
+    protected $seleniumIdeTestData;
     
     public function __construct($filePath)
     {
-        $this->seleniumFileParser = new SeleniumFileParser($filePath);
-        $this->seleniumIdeParsedXML = $this->seleniumFileParser->parse();
+        $seleniumFileParser = new SeleniumFileParser($filePath);
+        $this->seleniumIdeTestData = $seleniumFileParser->parse();
         $this->seleniumRCToBehatMinkFormatter = new SeleniumRCToBehatMinkFormatter(
-            $this->seleniumIdeParsedXML
+            $this->seleniumIdeTestData
         );
     }
     
     protected function getTestName()
     {
-        return $this->seleniumIdeParsedXML['test_name'];
+        return $this->seleniumIdeTestData['test_name'];
     }
     
     protected function getTestMethodName()
@@ -39,7 +38,7 @@ class BehatFilesGenerator {
     
     protected function getTestFeatureFileName()
     {
-        return str_replace(' ', '_', $this->seleniumIdeParsedXML['test_name']);
+        return str_replace(' ', '_', $this->seleniumIdeTestData['test_name']).'.featue';
     }
     
     protected function generateContextFile()
@@ -61,7 +60,8 @@ class FeatureContext extends MinkContext\n{
     public function __construct(array \$parameters)\n\t{
         // Initialize your context here\n\t}\n
     public function {$this->getTestMethodName()}()
-    {\n{$this->seleniumRCToBehatMinkFormatter->format()}\n\t}\n}
+    {\n{$this->seleniumRCToBehatMinkFormatter->format()}
+    }\n}
 FILE;
         file_put_contents($fileName, $data);
     }
