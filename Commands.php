@@ -19,7 +19,7 @@ class CommandFactory
             if (class_exists($className)) {
                 return new $className($command);
             } else {
-                throw new Exception('Command type not found.');
+                throw new Exception("Command type({$className}) not found.");
             }
         }
     }

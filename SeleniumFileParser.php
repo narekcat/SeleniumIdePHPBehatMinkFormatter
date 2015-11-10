@@ -36,7 +36,11 @@ class SeleniumFileParser {
     
     protected function getCommandsList()
     {
-        $trElements = $this->xml->getElementsByTagName('tr');
+        $tableBodyElement = $this->xml->getElementsByTagName('tbody')->item(0);
+        if ($tableBodyElement == null) {
+            throw new Exception("Wrong Selenium Ide file format.\n Commands list absent.\n");
+        }
+        $trElements = $tableBodyElement->getElementsByTagName('tr');
         if ($trElements->length == 0) {
             throw new Exception("Wrong Selenium Ide file format.\n Commands list absent.\n");
         }
@@ -46,13 +50,10 @@ class SeleniumFileParser {
             if ($tdElements->length < 3) {
                 throw new Exception("Wrong Selenium Ide file format.\n Command isn't full.");
             }
-            $commandName = $tdElements->item(0);
-            $commandTarget = $tdElements->item(1);
-            $commandValue = $tdElements->item(2);
             $commandsList[] = [
-                'name' => $commandName,
-                'target' => $commandTarget,
-                'value' => $commandValue
+                'name' => $tdElements->item(0)->nodeValue,
+                'target' => $tdElements->item(1)->nodeValue,
+                'value' => $tdElements->item(2)->nodeValue
             ];
         }
         return $commandsList;

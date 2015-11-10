@@ -14,7 +14,7 @@ class BehatFilesGenerator {
     
     public function __construct($filePath)
     {
-        $this->seleniumFilePrser = new SeleniumFileParser($filePath);
+        $this->seleniumFileParser = new SeleniumFileParser($filePath);
         $this->seleniumIdeParsedXML = $this->seleniumFileParser->parse();
         $this->seleniumRCToBehatMinkFormatter = new SeleniumRCToBehatMinkFormatter(
             $this->seleniumIdeParsedXML
@@ -28,6 +28,7 @@ class BehatFilesGenerator {
     
     protected function getTestMethodName()
     {
+        return 'somedumytestMethodName';
         //return $this->seleniumIdeParsedXML['test_name'];
     }
     

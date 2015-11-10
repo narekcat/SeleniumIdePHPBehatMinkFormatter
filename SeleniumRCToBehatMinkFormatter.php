@@ -10,11 +10,11 @@ require_once 'Commands.php';
 class SeleniumRCToBehatMinkFormatter
 {
     protected $minkContext;
-    protected $seleniumIdeparsedXML;
+    protected $seleniumIdeParsedXML;
     
-    public function __construct($seleniumIdeparsedXML)
+    public function __construct($seleniumIdeParsedXML)
     {
-        $this->seleniumIdeparsedXML = $seleniumIdeparsedXML;
+        $this->seleniumIdeParsedXML = $seleniumIdeParsedXML;
         $this->minkContext = '';
     }
     
@@ -25,8 +25,7 @@ class SeleniumRCToBehatMinkFormatter
     
     public function format()
     {
-        $parsedXML = $this->seleniumFileParser->parse();
-        $commandsList = $parsedXML['commands_list'];
+        $commandsList = $this->seleniumIdeParsedXML['commands_list'];
         foreach ($commandsList as $command) {
             $commandObj = $this->getCommandByName($command);
             $this->minkContext .= $commandObj->toBehatMink();
