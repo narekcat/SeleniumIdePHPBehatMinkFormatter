@@ -44,23 +44,31 @@ class BehatTestGenerator {
     {
         $fileName = 'FeatureContext.php';
         $data = <<<FILE
-<?php\n
-use Behat\MinkExtension\Context\MinkContext;\n
+<?php
+
+use Behat\MinkExtension\Context\MinkContext;
+
 /**
  * Features context.
  */
-class FeatureContext extends MinkContext\n{
+class FeatureContext extends MinkContext
+{
     /**
      * Initializes context.
      * Every scenario gets it's own context object.
      *
      * @param array \$parameters context parameters (set them up through behat.yml)
      */
-    public function __construct(array \$parameters)\n\t{
-        // Initialize your context here\n\t}\n
+    public function __construct(array \$parameters)
+    {
+        // Initialize your context here
+    }
+
     public function {$this->getTestMethodName()}()
-    {\n{$this->seleniumRCToBehatMinkFormatter->format()}
-    }\n}
+    {
+        {$this->seleniumRCToBehatMinkFormatter->format()}
+    }
+}
 FILE;
         file_put_contents($fileName, $data);
     }
