@@ -14,14 +14,12 @@ class CommandFactory
     {
         if ($type == '') {
             throw new Exception('Invalid command type.');
-        } else {
-            $className = ucfirst($type);
-            if (class_exists($className)) {
-                return new $className($command);
-            } else {
-                throw new Exception("Command type({$className}) not found.");
-            }
         }
+        $className = ucfirst($type);
+        if (!class_exists($className)) {
+            throw new Exception("Command type({$className}) not found.");
+        }
+        return new $className($command);
     }
 }
 

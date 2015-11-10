@@ -27,8 +27,7 @@ class BehatTestGenerator {
     
     protected function getTestMethodName()
     {
-        return 'somedumytestMethodName';
-        //return $this->seleniumIdeParsedXML['test_name'];
+        return str_replace(' ', '', ucwords($this->seleniumIdeTestData['test_name']));
     }
     
     protected function getTestMethodContent()
@@ -38,7 +37,7 @@ class BehatTestGenerator {
     
     protected function getTestFeatureFileName()
     {
-        return str_replace(' ', '_', $this->seleniumIdeTestData['test_name']).'.featue';
+        return str_replace(' ', '_', $this->seleniumIdeTestData['test_name']).'.feature';
     }
     
     protected function generateContextFile()

@@ -6,14 +6,14 @@
  * @author narek_vardzelyan
  */
 class SeleniumFileParser {
-    protected $testFileName;
+    protected $filePath;
     protected $xml;
     
-    public function __construct($testFileName)
+    public function __construct($filePath)
     {
-        $this->testFileName = $testFileName;
+        $this->filePath = $filePath;
         $this->xml = new DOMDocument('1.0', 'UTF-8');
-        $this->xml->load($testFileName);
+        $this->xml->load($filePath);
     }
     
     protected function getTestName()
