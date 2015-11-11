@@ -73,7 +73,7 @@ class FeatureContext extends MinkContext
 
     public function {$this->getTestMethodName()}()
     {
-        {$this->seleniumRCToBehatMinkFormatter->format()}
+    {$this->seleniumRCToBehatMinkFormatter->format()}
     }
 }
 FILE;
