@@ -1,0 +1,6 @@
+default:
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://16.feature-sd-7626.website.ls.vu/
+            goutte: ~
+            selenium2: ~

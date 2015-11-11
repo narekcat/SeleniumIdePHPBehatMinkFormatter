@@ -7,7 +7,7 @@ namespace Fouraitch;
 
 use Exception;
 
-class Commands
+class CommandFactory
 {
     public function __construct()
     {

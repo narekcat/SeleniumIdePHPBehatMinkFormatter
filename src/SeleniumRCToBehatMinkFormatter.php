@@ -18,7 +18,7 @@ class SeleniumRCToBehatMinkFormatter
     
     protected function getCommandByName($command)
     {
-        return Commands::build($command['name'], $command);
+        return CommandFactory::build($command['name'], $command);
     }
     
     public function format()

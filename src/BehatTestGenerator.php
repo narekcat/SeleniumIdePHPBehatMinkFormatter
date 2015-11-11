@@ -39,9 +39,17 @@ class BehatTestGenerator {
         return str_replace(' ', '_', $this->seleniumIdeTestData['test_name']).'.feature';
     }
     
+    protected function createFileStructure()
+    {
+        $filename = 'features/bootstrap/';
+        if (!file_exists($filename)) {
+            mkdir($filename, 0777,true);
+        }
+    }
+    
     protected function generateContextFile()
     {
-        $fileName = 'FeatureContext.php';
+        $fileName = 'features/bootstrap/FeatureContext.php';
         $data = <<<FILE
 <?php
 
@@ -74,7 +82,7 @@ FILE;
     
     protected function generateFeatureFile()
     {
-        $fileName = $this->getTestFeatureFileName();
+        $fileName = 'features/' . $this->getTestFeatureFileName();
         $data = <<<FILE
 Feature: {$this->getTestName()}
     Feature description
@@ -88,6 +96,7 @@ FILE;
     
     public function generate()
     {
+        $this->createFileStructure();
         $this->generateContextFile();
         $this->generateFeatureFile();
     }

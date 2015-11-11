@@ -3,6 +3,7 @@
 namespace Fouraitch;
 
 use Exception;
+use DOMDocument;
 
 /**
  * The class parses Selenium Ide html test file
@@ -16,7 +17,7 @@ class SeleniumFileParser {
     public function __construct($filePath)
     {
         $this->filePath = $filePath;
-        $this->xml = new \DOMDocument('1.0', 'UTF-8');
+        $this->xml = new DOMDocument('1.0', 'UTF-8');
         $this->xml->load($filePath);
     }
     
