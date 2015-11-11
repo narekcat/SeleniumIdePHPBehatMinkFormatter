@@ -60,6 +60,8 @@ use Behat\MinkExtension\Context\MinkContext;
  */
 class FeatureContext extends MinkContext
 {
+    protected \$BaseUrl;
+
     /**
      * Initializes context.
      * Every scenario gets it's own context object.
@@ -68,9 +70,12 @@ class FeatureContext extends MinkContext
      */
     public function __construct(array \$parameters)
     {
-        // Initialize your context here
+        \$this->BaseUrl = \$parameters['base_url'];
     }
 
+    /**
+     * @Given /^{$this->getTestName()}$/
+     */
     public function {$this->getTestMethodName()}()
     {
     {$this->seleniumRCToBehatMinkFormatter->format()}
@@ -89,7 +94,7 @@ Feature: {$this->getTestName()}
 
     @javascript
     Scenario: {$this->getTestName()}
-        {$this->getTestName()}
+        Given {$this->getTestName()}
 FILE;
         file_put_contents($fileName, $data);
     }

@@ -1,6 +1,12 @@
 default:
     extensions:
-        Behat\MinkExtension\Extension:
-            base_url: http://16.feature-sd-7626.website.ls.vu/
-            goutte: ~
+        Behat\MinkExtension:
+#            base_url: http://16.feature-sd-7626.website.ls.vu/
+#            goutte: ~
             selenium2: ~
+    suites:
+          default:
+            contexts:
+              - FeatureContext:
+                    parameters:
+                        base_url: http://php.net
