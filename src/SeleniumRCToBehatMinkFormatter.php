@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Commands.php';
+namespace Fouraitch;
 
 /**
  * This class formats Selenium Ide commands to Behat Mink method calls.
@@ -18,7 +18,7 @@ class SeleniumRCToBehatMinkFormatter
     
     protected function getCommandByName($command)
     {
-        return CommandFactory::build($command['name'], $command);
+        return Commands::build($command['name'], $command);
     }
     
     public function format()

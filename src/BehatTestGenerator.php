@@ -1,7 +1,6 @@
 <?php
 
-require_once 'SeleniumRCToBehatMinkFormatter.php';
-require_once 'SeleniumFileParser.php';
+namespace Fouraitch;
 
 /**
  * This class generates Behat Mink context file and feature file.

@@ -3,7 +3,11 @@
  * The file contains commands factory.
  */
 
-class CommandFactory
+namespace Fouraitch;
+
+use Exception;
+
+class Commands
 {
     public function __construct()
     {
@@ -15,7 +19,7 @@ class CommandFactory
         if ($type == '') {
             throw new Exception('Invalid command type.');
         }
-        $className = ucfirst($type);
+        $className = 'Fouraitch\\' . ucfirst($type);
         if (!class_exists($className)) {
             throw new Exception("Command type({$className}) not found.");
         }
