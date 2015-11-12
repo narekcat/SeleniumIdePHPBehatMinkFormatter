@@ -46,7 +46,7 @@ abstract class BaseCommand
             self::$isPageCreated = true;
         }
         if ($selectorType === 'id') {
-            return $result . "\t\$element = \$page->fileById('{$selector}');\n";
+            return $result . "\t\$element = \$page->findById('{$selector}');\n";
         }
         if ($selectorType === 'css') {
             return $result . "\t\$element = \$page->find('css', '{$selector}');\n";
@@ -84,8 +84,30 @@ class Type extends BaseCommand
 {
     public function toBehatMink()
     {
-        return $this->getElementByTarget($this->command['target'])
-            . "\t\$element->setValue('{$this->command['value']}');\n\n";
+        $result = $this->getElementByTarget($this->command['target'])
+//                . "\t\$element->sendKeys('{$this->command['value']}');\n";
+//            . "\t\$element->setValue();\n"
+            . "\t\$element->focus();\n";
+        $valueAsArray = str_split($this->command['value']);
+        foreach ($valueAsArray as $inputChar) {
+            $jsToEvaluate = "var keyboardEvent = document.createEvent('KeyboardEvent');
+var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? 'initKeyboardEvent' : 'initKeyEvent';
+keyboardEvent[initMethod](
+    'keypress', // event type : keydown, keyup, keypress
+     true, // bubbles
+     true, // cancelable
+     window, // viewArg: should be window
+     false, // ctrlKeyArg
+     false, // altKeyArg
+     false, // shiftKeyArg
+     false, // metaKeyArg
+     40, // keyCodeArg : unsigned long the virtual key code, else 0
+     0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
+);
+document.dispatchEvent(keyboardEvent);";
+            $result .= "\t\$this->getSession()->evaluateScript(\"{$jsToEvaluate}\");\n";
+        }
+        return $result;
     }
 }
 
@@ -112,8 +134,26 @@ class Select extends BaseCommand
 {
     public function toBehatMink()
     {
-        return "\t\$this->getSession()->selectOption(\"{$this->command['target']}\", "
-        . "\"{$this->command['value']}\");\n\n";
+        $optionValueOrText = substr(
+            $this->command['value'],
+            strpos($this->command['value'], '=') + 1
+        );
+        return $this->getElementByTarget($this->command['target'])
+            . "\t\$element->selectOption({$optionValueOrText});\n\n";
+    }
+}
+
+class SelectAndWait extends BaseCommand
+{
+    public function toBehatMink()
+    {
+        $optionValueOrText = substr(
+            $this->command['value'],
+            strpos($this->command['value'], '=') + 1
+        );
+        return $this->getElementByTarget($this->command['target'])
+            . "\t\$element->selectOption('{$optionValueOrText}');\n"
+            . "\t\$this->getSession()->wait(5000);\n\n";
     }
 }
 
