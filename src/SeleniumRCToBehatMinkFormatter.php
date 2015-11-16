@@ -1,6 +1,6 @@
 <?php
 
-namespace Fouraitch;
+namespace Fouraitch\SeleniumIdeFormatter;
 
 /**
  * This class formats Selenium Ide commands to Behat Mink method calls.

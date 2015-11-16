@@ -3,7 +3,7 @@
  * The file contains commands factory.
  */
 
-namespace Fouraitch;
+namespace Fouraitch\SeleniumIdeFormatter;
 
 use Exception;
 
@@ -19,7 +19,7 @@ class CommandFactory
         if ($type == '') {
             throw new Exception('Invalid command type.');
         }
-        $className = 'Fouraitch\\' . ucfirst($type);
+        $className = 'Fouraitch\\SeleniumIdeFormatter\\' . ucfirst($type);
         if (!class_exists($className)) {
             throw new Exception("Command type({$className}) not found.");
         }
@@ -82,46 +82,46 @@ class Open extends BaseCommand
     }
 }
 
-//class Type extends BaseCommand
-//{
-//    public function toBehatMink()
-//    {
-//        $result = $this->getElementByTarget($this->command['target'])
-////                . "\t\$element->sendKeys('{$this->command['value']}');\n";
-////            . "\t\$element->setValue();\n"
-//            . "\t\$element->focus();\n";
-//        $valueAsArray = str_split($this->command['value']);
-//        foreach ($valueAsArray as $inputChar) {
-//            $asciiCodeOfInputChar = ord($inputChar);
-//            $jsToEvaluate = "keyboardEvent = document.createEvent('KeyboardEvent');
-//initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? 'initKeyboardEvent' : 'initKeyEvent';
-//keyboardEvent[initMethod](
-//    'keypress', // event type : keydown, keyup, keypress
-//     true, // bubbles
-//     true, // cancelable
-//     window, // viewArg: should be window
-//     false, // ctrlKeyArg
-//     false, // altKeyArg
-//     false, // shiftKeyArg
-//     false, // metaKeyArg
-//     {$asciiCodeOfInputChar}, // keyCodeArg : unsigned long the virtual key code, else 0
-//     0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
-//);
-//document.dispatchEvent(keyboardEvent);";
-//            $result .= "\t\$this->getSession()->evaluateScript(\"{$jsToEvaluate}\");\n";
-//        }
-//        return $result;
-//    }
-//}
-
 class Type extends BaseCommand
 {
     public function toBehatMink()
     {
-        return $this->getElementByTarget($this->command['target']).
-                "\t\$element->setValue('{$this->command['value']}');\n\n";
+        $result = $this->getElementByTarget($this->command['target'])
+//                . "\t\$element->sendKeys('{$this->command['value']}');\n";
+//            . "\t\$element->setValue();\n"
+            . "\t\$element->focus();\n";
+        $valueAsArray = str_split($this->command['value']);
+        foreach ($valueAsArray as $inputChar) {
+            $asciiCodeOfInputChar = ord($inputChar);
+            $jsToEvaluate = "keyboardEvent = document.createEvent('KeyboardEvent');
+initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? 'initKeyboardEvent' : 'initKeyEvent';
+keyboardEvent[initMethod](
+    'keypress', // event type : keydown, keyup, keypress
+     true, // bubbles
+     true, // cancelable
+     window, // viewArg: should be window
+     false, // ctrlKeyArg
+     false, // altKeyArg
+     false, // shiftKeyArg
+     false, // metaKeyArg
+     {$asciiCodeOfInputChar}, // keyCodeArg : unsigned long the virtual key code, else 0
+     0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
+);
+document.dispatchEvent(keyboardEvent);";
+            $result .= "\t\$this->getSession()->evaluateScript(\"{$jsToEvaluate}\");\n";
+        }
+        return $result;
     }
 }
+
+//class Type extends BaseCommand
+//{
+//    public function toBehatMink()
+//    {
+//        return $this->getElementByTarget($this->command['target']).
+//                "\t\$element->setValue('{$this->command['value']}');\n\n";
+//    }
+//}
 
 class TypeAndWait extends BaseCommand
 {

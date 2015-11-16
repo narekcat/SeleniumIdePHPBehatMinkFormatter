@@ -11,5 +11,5 @@ $thirdFilePath = '/Users/narek_vardzelyan/Documents/Testing php_net test two.htm
 $fourthFilePath = '/Users/narek_vardzelyan/Documents/Testing php_net test three.html';
 $fifthFilePath = '/Users/narek_vardzelyan/Documents/github_test_two.xhtml';
 
-$BehatTestGenerator = new Fouraitch\BehatTestGenerator($fifthFilePath);
+$BehatTestGenerator = new Fouraitch\SeleniumIdeFormatter\BehatTestGenerator($thirdFilePath);
 $BehatTestGenerator->generate();

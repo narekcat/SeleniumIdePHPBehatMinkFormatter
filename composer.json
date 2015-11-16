@@ -7,7 +7,7 @@
             "email": "narek.vardzelyan@of.am"
         }
     ],
-    "require": {
+    "require-dev": {
         "behat/behat": "3.*@stable",
         "behat/mink": "1.7.*@stable",
         "behat/mink-extension": "*",
@@ -19,6 +19,6 @@
         "bin-dir": "bin/"
     },
     "autoload": {
-        "psr-4": {"Fouraitch\\": "src/"}
+        "psr-4": {"Fouraitch\\SeleniumIdeFormatter\\": "src/"}
     }
 }

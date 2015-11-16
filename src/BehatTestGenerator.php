@@ -1,6 +1,6 @@
 <?php
 
-namespace Fouraitch;
+namespace Fouraitch\SeleniumIdeFormatter;
 
 /**
  * This class generates Behat Mink context file and feature file.

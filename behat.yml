@@ -9,4 +9,4 @@ default:
             contexts:
               - FeatureContext:
                     parameters:
-                        base_url: http://github.com
+                        base_url: http://php.net

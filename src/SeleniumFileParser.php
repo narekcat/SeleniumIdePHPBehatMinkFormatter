@@ -1,6 +1,6 @@
 <?php
 
-namespace Fouraitch;
+namespace Fouraitch\SeleniumIdeFormatter;
 
 use Exception;
 use DOMDocument;

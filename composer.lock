@@ -4,9 +4,10 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6b84543bb0ab3481585d6ee572eb8d42",
-    "content-hash": "46cb555fc5c5451b5e1b435a59bd519e",
-    "packages": [
+    "hash": "9d0e9790eb7bdb6754b788721e649002",
+    "content-hash": "8b51cb5bfbdeca165bafbba45a1aab45",
+    "packages": [],
+    "packages-dev": [
         {
             "name": "behat/behat",
             "version": "v3.0.15",
@@ -1471,7 +1472,6 @@
             "time": "2015-11-05 09:04:44"
         }
     ],
-    "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
