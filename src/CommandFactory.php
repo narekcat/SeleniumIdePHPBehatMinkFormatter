@@ -38,37 +38,39 @@ abstract class BaseCommand
     abstract public function toBehatMink();
     protected function getElementByTarget($target)
     {
-        $selectorType = strstr($target, '=', true);
-        $selector = str_replace("'", "\'", substr($target, strpos($target, '=') + 1));
         $result = '';
         if (!self::$isPageCreated) {
             $result = "\t\$page = \$this->getSession()->getPage();\n";
             self::$isPageCreated = true;
         }
-        if ($selectorType === 'id') {
-            return $result . "\t\$element = \$page->findById('{$selector}');\n";
+        if (preg_match('/^(id|css|link|name|xpath)/', $target, $out)) {
+            $selectorType = $out[0];
+            $selector = str_replace("'", "\'", substr($target, strpos($target, '=') + 1));
+            if ($selectorType === 'id') {
+                return $result . "\t\$element = \$page->findById('{$selector}');\n";
+            }
+            if ($selectorType === 'css') {
+                return $result . "\t\$element = \$page->find('css', '{$selector}');\n";
+            }
+            if ($selectorType === 'link') {
+                return $result . "\t\$escapedValue = \$this->getSession()->getSelectorsHandler()->xpathLiteral('{$selector}');\n"
+                        . "\t\$element = \$page->find('named', array('link', \$escapedValue));\n";
+            }
+            if ($selectorType === 'name') {
+                return $result . "\t\$escapedValue = \$this->getSession()->getSelectorsHandler()->xpathLiteral('{$selector}');\n"
+                        . "\t\$element = \$page->find('named', array('id_or_name', \$escapedValue));\n";
+            }
+            if ($selectorType === 'xpath') {
+                return $result . "\t\$element = \$page->find('xpath', '{$selector}');\n";
+            }
         }
-        if ($selectorType === 'css') {
-            return $result . "\t\$element = \$page->find('css', '{$selector}');\n";
+        if (strpos($target, 'document.') === 0) {
+            return "\t\$element = \$this->getSession()->evaluateScript('{$target}');\n";
         }
-        if ($selectorType === 'link') {
-            return $result . "\t\$escapedValue = \$this->getSession()->getSelectorsHandler()->xpathLiteral('{$selector}');\n"
-                    . "\t\$element = \$page->find('named', array('link', \$escapedValue));\n";
+        if (strpos($target, '//') === 0) {
+            return $result . "\t\$element = \$page->find('xpath', \"{$target}\");\n";
         }
-        if ($selectorType === 'name') {
-            return $result . "\t\$escapedValue = \$this->getSession()->getSelectorsHandler()->xpathLiteral('{$selector}');\n"
-                    . "\t\$element = \$page->find('named', array('id_or_name', \$escapedValue));\n";
-        }
-        if ($selectorType === 'xpath') {
-            return $result . "\t\$element = \$page->find('xpath', '{$selector}');\n";
-        }
-        if (strstr($selector, 'document.') === 0) {
-            return "\t\$element = \$this->getSession()->evaluateScript('{$selector}');\n";
-        }
-        if (strstr($selector, '//') === 0) {
-            return $result . "\t\$element = \$page->find('xpath', '{$selector}');\n";
-        }
-        return $result . "\t\$element = \$page->fileById('{$selector}');\n";
+        return $result . "\t\$element = \$page->fileById('{$target}');\n";
     }
 }
 
@@ -80,35 +82,54 @@ class Open extends BaseCommand
     }
 }
 
+//class Type extends BaseCommand
+//{
+//    public function toBehatMink()
+//    {
+//        $result = $this->getElementByTarget($this->command['target'])
+////                . "\t\$element->sendKeys('{$this->command['value']}');\n";
+////            . "\t\$element->setValue();\n"
+//            . "\t\$element->focus();\n";
+//        $valueAsArray = str_split($this->command['value']);
+//        foreach ($valueAsArray as $inputChar) {
+//            $asciiCodeOfInputChar = ord($inputChar);
+//            $jsToEvaluate = "keyboardEvent = document.createEvent('KeyboardEvent');
+//initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? 'initKeyboardEvent' : 'initKeyEvent';
+//keyboardEvent[initMethod](
+//    'keypress', // event type : keydown, keyup, keypress
+//     true, // bubbles
+//     true, // cancelable
+//     window, // viewArg: should be window
+//     false, // ctrlKeyArg
+//     false, // altKeyArg
+//     false, // shiftKeyArg
+//     false, // metaKeyArg
+//     {$asciiCodeOfInputChar}, // keyCodeArg : unsigned long the virtual key code, else 0
+//     0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
+//);
+//document.dispatchEvent(keyboardEvent);";
+//            $result .= "\t\$this->getSession()->evaluateScript(\"{$jsToEvaluate}\");\n";
+//        }
+//        return $result;
+//    }
+//}
+
 class Type extends BaseCommand
 {
     public function toBehatMink()
     {
-        $result = $this->getElementByTarget($this->command['target'])
-//                . "\t\$element->sendKeys('{$this->command['value']}');\n";
-//            . "\t\$element->setValue();\n"
-            . "\t\$element->focus();\n";
-        $valueAsArray = str_split($this->command['value']);
-        foreach ($valueAsArray as $inputChar) {
-            $asciiCodeOfInputChar = ord($inputChar);
-            $jsToEvaluate = "keyboardEvent = document.createEvent('KeyboardEvent');
-initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? 'initKeyboardEvent' : 'initKeyEvent';
-keyboardEvent[initMethod](
-    'keypress', // event type : keydown, keyup, keypress
-     true, // bubbles
-     true, // cancelable
-     window, // viewArg: should be window
-     false, // ctrlKeyArg
-     false, // altKeyArg
-     false, // shiftKeyArg
-     false, // metaKeyArg
-     {$asciiCodeOfInputChar}, // keyCodeArg : unsigned long the virtual key code, else 0
-     0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
-);
-document.dispatchEvent(keyboardEvent);";
-            $result .= "\t\$this->getSession()->evaluateScript(\"{$jsToEvaluate}\");\n";
-        }
-        return $result;
+        return $this->getElementByTarget($this->command['target']).
+                "\t\$element->setValue('{$this->command['value']}');\n\n";
+    }
+}
+
+class TypeAndWait extends BaseCommand
+{
+    public function toBehatMink()
+    {
+        return $this->getElementByTarget($this->command['target']).
+                "\t\$element->setValue('{$this->command['value']}');\n"
+                . "\t\$this->getSession()->wait(5000);\n\n";
     }
 }
 
@@ -140,7 +161,7 @@ class Select extends BaseCommand
             strpos($this->command['value'], '=') + 1
         );
         return $this->getElementByTarget($this->command['target'])
-            . "\t\$element->selectOption({$optionValueOrText});\n\n";
+            . "\t\$element->selectOption('{$optionValueOrText}');\n\n";
     }
 }
 

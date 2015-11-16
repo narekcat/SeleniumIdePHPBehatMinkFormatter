@@ -7,7 +7,17 @@
             "email": "narek.vardzelyan@of.am"
         }
     ],
+    "require": {
+        "behat/behat": "3.*@stable",
+        "behat/mink": "1.7.*@stable",
+        "behat/mink-extension": "*",
+        "behat/mink-goutte-driver": "*",
+        "behat/mink-selenium2-driver": "*"
+    },
     "minimum-stability": "dev",
+    "config": {
+        "bin-dir": "bin/"
+    },
     "autoload": {
         "psr-4": {"Fouraitch\\": "src/"}
     }
