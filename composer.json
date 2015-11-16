@@ -1,6 +1,7 @@
 {
     "name": "fouraitch/selenium-ide-php-behat-mink-formatter",
     "version": "1.0",
+    "license": "MIT",
     "authors": [
         {
             "name": "Narek Vardzelyan",
