@@ -1,0 +1,26 @@
+{
+    "name": "fouraitch/selenium-ide-php-behat-mink-formatter",
+    "version": "1.0",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Narek Vardzelyan",
+            "email": "narek.vardzelyan@of.am"
+        }
+    ],
+    "require-dev": {
+        "behat/behat": "3.*@stable",
+        "behat/mink": "1.7.*@stable",
+        "behat/mink-extension": "*",
+        "behat/mink-goutte-driver": "*",
+        "behat/mink-selenium2-driver": "*"
+    },
+    "minimum-stability": "dev",
+    "config": {
+        "bin-dir": "bin/"
+    },
+    "autoload": {
+        "psr-4": {"Fouraitch\\SeleniumIdeFormatter\\": "src/"}
+    },
+    "bin": ["bin/convert"]
+}
