@@ -22,5 +22,5 @@
     "autoload": {
         "psr-4": {"Fouraitch\\SeleniumIdeFormatter\\": "src/"}
     },
-    "bin": ["bin/convert"]
+    "bin": ["bin/convert.php"]
 }
