@@ -3,7 +3,7 @@
  * This file is converts input file from SeleniumIde xml format to Behat php format
  */
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 use Fouraitch\SeleniumIdeFormatter\BehatTestGenerator;
 
@@ -29,11 +29,11 @@ try {
         throw new Exception("There are too many parameters.\n");
     }
     
-    $fileName = $_SERVER['argv'][1];
+    $filePath = $_SERVER['argv'][1];
+    $fileName = strstr($filePath, strrpos($filePath, '/'));
     if (preg_match('/^[0-9]/', $fileName)) {
         throw new Exception("Test file name must not start with number.\n");
     }
-    $filePath = 'LearnshipSeleniumTests/TestCases/' . $fileName;
     if (!file_exists($filePath)) {
         throw new Exception("Wrong file name.\n");
     }
